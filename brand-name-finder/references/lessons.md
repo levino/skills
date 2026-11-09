@@ -34,6 +34,10 @@ Semantic track for groupware (small story, not overdone): lat. *nuntius*
   product on .ai or .app, (2) a live EU mark one letter off in classes 9/42,
   including very recent applications, (3) one letter from a world brand
   (Holvo ≈ Volvo, Folvo ≈ Volvo, Letvo ≈ LeTV).
+- Ending statistics from one run (a data point, not a rule): root + -ira /
+  -elo / -eno rarely collided with marks; -eo / -ari / -era often collided
+  with Romance marks and words. Root + suffix names drift toward the
+  rejected "German word + -ando" style, so check taste with the user early.
 - Origin matters: a German company rejected every Nordic-sounding name
   (-vik, -vika, Norse roots) after a whole parallel run had produced them.
 
@@ -44,6 +48,8 @@ Brindel ≈ Windel, Kenodor ⊃ "odor", Premine = Krypto-Begriff, Ordel ≈ Bord
 Hidden in other languages or drug names: Vardna ≈ Vardenafil, Brevna =
 russ. "Baumstämme", Kursvo ≈ kurva (PL/SR), Morvik ⊃ "Mord", мор = Pest,
 Galna = schwed. verrückt, Kelnor ≈ Kellner, Hasvik ⊃ "Hass", Gelvik ≈ pelvic.
+Pultena ≈ puttana, Griffa ≈ span. grifa (Marihuana), Tafero ≈ span.
+trafero (Drogenkurier), Pulteo ≈ PulteGroup.
 Famous near-names: Swaroni → Swarovski, Zendon → Zendesk.
 
 ## Tooling
@@ -85,3 +91,5 @@ Famous near-names: Swaroni → Swarovski, Zendon → Zendesk.
 - Alternative route to Nice classes if the facet route fails: SmartSearch,
   then (same cookies) submit the result-list form with checkbox_0…12 on and
   download the CSV via `…/marke/trefferliste.navigationleiste.aktionsmenue:herunterladencsv`.
+- WebSearch budget: ~200 calls per session, shared by all agents; six
+  parallel agents burned it fast. Web search goes last and is rationed.

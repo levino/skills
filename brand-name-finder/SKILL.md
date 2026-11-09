@@ -84,8 +84,7 @@ shared claimed-names file (append under `flock`, skip names already in it).
    after weeks. Optional, in the user's browser: TMview
    (https://www.tmdn.org/tmview) for non-EU offices (USPTO, UK, CH). Don't
    script TMview.
-4. **Web search** (rule 5), plus near-misses one letter off in the same field.
-5. **All TLDs + taken domains:** `scripts/check-domains.sh -t "de com ai io app eu co net org dev" finalists…`
+4. **All TLDs + taken domains:** `scripts/check-domains.sh -t "de com ai io app eu co net org dev" finalists…`
    (RDAP, sequential, `DELAY≥0.5`: DENIC, .ai and .io all rate-limit under
    parallel load), then
    `… | awk '$3=="taken"{print $1"."$2}' | scripts/site-info.sh`
@@ -93,6 +92,10 @@ shared claimed-names file (append under `flock`, skip names already in it).
    - `active` → open it. Software / SaaS / AI / business tools → **dead**.
    - `blocked` → content unknown, check via web search.
    Report DNS-only results as "wahrscheinlich frei", to confirm before buying.
+5. **Web search, last** (rule 5), only for names that survived everything
+   else, plus near-misses one letter off in the same field. The web-search
+   budget is limited (~200 calls per session, shared by all agents): split
+   it between parallel agents up front.
 6. **"Have I heard this?"**: "Ich habe mal eine Marke gehört, die ungefähr
    wie XYZ klang — welche?" Catches Swaroni → Swarovski, Zendon → Zendesk.
 
