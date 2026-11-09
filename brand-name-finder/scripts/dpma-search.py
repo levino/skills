@@ -30,6 +30,9 @@ endings return hits, e.g. *desk -> 352); treat it as a lower bound.
 Detail pages work only inside a search session (EM via the relative link
 registerHABM?AKZ= from the result list, DE via marke/register/<nr>/DE);
 opened directly they redirect. --classes avoids that.
+Retries timeouts/HTTP errors with backoff (5/15/45 s); ERROR only after the
+last try. A name with an ERROR line is unresolved, not safe. Batches of <= 20
+names per call.
 """
 import sys, re, html, time, json, urllib.request, urllib.parse, http.cookiejar, functools
 
@@ -46,6 +49,17 @@ def opener():
 
 
 def search(q):
+    """With retries: DPMA times out after ~25 names in a row."""
+    for wait in (5, 15, 45, None):
+        try:
+            return _search(q)
+        except Exception:
+            if wait is None:
+                raise
+            time.sleep(wait)
+
+
+def _search(q):
     get = opener()
     meta = json.loads(get(f"{ROOT}/DPMAregister/smartsearch?queryString={urllib.parse.quote(q)}"))
     if meta.get("marErrors"):
