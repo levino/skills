@@ -21,6 +21,8 @@
 #      computer, usually NOT in sandboxes/proxies).
 #   3. If WHOIS is not possible, DNS over HTTPS (cloudflare-dns.com): NS records
 #      = taken, NXDOMAIN = likely-free.
+#      Also used when RDAP keeps failing (429 rate limit when several agents
+#      check in parallel; .ai/.io are the strictest): method "dns-fallback".
 #   4. Calibration: before trusting a TLD, query nic.<tld> or a known-taken
 #      domain AND a random gibberish domain. If they don't give different
 #      answers, every result for that TLD is reported as "unknown".
@@ -79,7 +81,7 @@ rdap_status() {   # $1 = domain, $2 = base url → prints free|taken|unknown
     case $code in
       200) echo taken; return ;;
       404) echo free; return ;;
-      429|5*|000) sleep $((i * 2)) ;;
+      429|5*|000) sleep $((i * 2 + RANDOM % 3)) ;;   # backoff + jitter (parallel agents)
       *) break ;;
     esac
   done
@@ -104,7 +106,12 @@ dns_status() {    # $1 = domain → taken | likely-free | unknown  (DNS over HTT
 
 check() {         # $1 = domain, $2 = tld → "status<TAB>method"
   local r
-  if [ -n "${RDAP[$2]:-}" ]; then echo -e "$(rdap_status "$1" "${RDAP[$2]}")\trdap"; return; fi
+  if [ -n "${RDAP[$2]:-}" ]; then
+    r=$(rdap_status "$1" "${RDAP[$2]}")
+    # RDAP rate-limits (429) under parallel load, notably .ai/.io → DNS fallback.
+    if [ "$r" = unknown ]; then echo -e "$(dns_status "$1")\tdns-fallback"; else echo -e "$r\trdap"; fi
+    return
+  fi
   if [ -n "${WHOIS_SRV[$2]:-}" ]; then
     r=$(whois_status "$1" "${WHOIS_SRV[$2]}")
     [ "$r" != unknown ] && { echo -e "$r\twhois"; return; }
