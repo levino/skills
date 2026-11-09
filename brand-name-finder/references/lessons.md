@@ -38,6 +38,9 @@ Semantic track for groupware (small story, not overdone): lat. *nuntius*
   -elo / -eno rarely collided with marks; -eo / -ari / -era often collided
   with Romance marks and words. Root + suffix names drift toward the
   rejected "German word + -ando" style, so check taste with the user early.
+- 6 letters beat 5: in a 5-letter round 41 of 101 had .de free and 16 of
+  the 20 survivors died on marks one letter off; in a 6-letter round 33 of
+  39 had .de free, with far fewer near marks.
 - Ending density: soft -a/-o names died mostly on near-miss marks, not on
   domains. A wildcard DPMA probe per ending predicts it: -alde/-elde got 8 of
   9 names through (.com included).
@@ -54,6 +57,7 @@ Galna = schwed. verrückt, Kelnor ≈ Kellner, Hasvik ⊃ "Hass", Gelvik ≈ pel
 Pultena ≈ puttana, Griffa ≈ span. grifa (Marihuana), Tafero ≈ span.
 trafero (Drogenkurier), Pulteo ≈ PulteGroup.
 Wivalde ≈ Vivaldi (Browser); -vena klingt medizinisch (Vene).
+Flemvi ≈ phlegm, Klavu ≈ klauen.
 Famous near-names: Swaroni → Swarovski, Zendon → Zendesk.
 
 ## Tooling
@@ -105,3 +109,9 @@ Famous near-names: Swaroni → Swarovski, Zendon → Zendesk.
   swarov* → 0, *rovski → 0, zende* → 0 although the marks exist; short stems
   work (*desk → 352, zend* → 12). The near-miss search therefore uses `?`
   only; the `name*` variant was dropped.
+- DPMA statuses seen and treated as dead: Marke gelöscht(/Schutz erloschen),
+  Eintragung gelöscht, Akte vernichtet, Anmeldung zurückgenommen /
+  zurückgewiesen, Kein Schutz, Marke nicht eingetragen(/Schutz nicht
+  möglich). Live: eingetragen, Schutz bewilligt, Anmeldung eingegangen /
+  veröffentlicht / im Prüfungsverfahren, Widerspruch eingelegt, Vorläufiger
+  Schutz, Schutz unbekannt (check by hand).

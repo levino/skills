@@ -58,8 +58,8 @@ categories to exclude.
 - Known dislikes and likes: `references/lessons.md`.
 
 ### 4. Generate within the agreed pattern
-Short names are nearly all registered (5 letters: every .com, ~90 % .de).
-Plan for 6–7 letters or accept a parked .com. Vary endings: a pattern
+Default to 6–7 letters. 5-letter names are nearly all registered (every
+.com, ~90 % .de) and crowded by marks one letter off. Vary endings: a pattern
 saturates fast (one ending made up 30 of the survivors in a single run).
 Before generating at scale, probe the trademark density of candidate endings
 with a wildcard query (`dpma-search.py --all '*alde'`; `*` works only with
@@ -100,7 +100,8 @@ shared claimed-names file (append under `flock`, skip names already in it).
 5. **Web search, last** (rule 5), only for names that survived everything
    else, plus near-misses one letter off in the same field. The web-search
    budget is limited (~200 calls per session, shared by all agents): split
-   it between parallel agents up front.
+   it between parallel agents up front. Budget gone → label the name
+   "Websuche offen", never safe. Don't scrape search engines with curl.
 6. **"Have I heard this?"**: "Ich habe mal eine Marke gehört, die ungefähr
    wie XYZ klang — welche?" Catches Swaroni → Swarovski, Zendon → Zendesk.
 

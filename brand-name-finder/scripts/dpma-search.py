@@ -14,7 +14,7 @@ Usage:
 Output (TSV): name  query  register  number  status  mark-text  [classes]
   plus a summary line per name:  name  HITS  n  (n live)
 Dead = gelöscht, vernichtet, zurückgewiesen, zurückgenommen, erloschen,
-abgelaufen, "Kein Schutz". A live hit in classes 9/35/38/42 kills a name.
+abgelaufen, "Kein Schutz", "Marke nicht eingetragen(/Schutz nicht möglich)". A live hit in classes 9/35/38/42 kills a name.
 "classes?" = classes could not be read: look them up before trusting the name.
 
 Uses the public SmartSearch JSON endpoint (no login, no captcha); the Basis
@@ -37,7 +37,7 @@ print = functools.partial(print, flush=True)  # unbuffered output for background
 
 ROOT = "https://register.dpma.de"
 UA = {"User-Agent": "Mozilla/5.0 (brand-name-finder)"}
-DEAD = re.compile(r"gelöscht|vernichtet|zurückgewiesen|zurückgenommen|erloschen|abgelaufen|kein schutz", re.I)
+DEAD = re.compile(r"gelöscht|vernichtet|zurückgewiesen|zurückgenommen|erloschen|abgelaufen|kein schutz|nicht eingetragen|schutz nicht möglich", re.I)
 
 
 def opener():
