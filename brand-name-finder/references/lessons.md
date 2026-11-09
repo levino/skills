@@ -38,6 +38,9 @@ Semantic track for groupware (small story, not overdone): lat. *nuntius*
   -elo / -eno rarely collided with marks; -eo / -ari / -era often collided
   with Romance marks and words. Root + suffix names drift toward the
   rejected "German word + -ando" style, so check taste with the user early.
+- Ending density: soft -a/-o names died mostly on near-miss marks, not on
+  domains. A wildcard DPMA probe per ending predicts it: -alde/-elde got 8 of
+  9 names through (.com included).
 - Origin matters: a German company rejected every Nordic-sounding name
   (-vik, -vika, Norse roots) after a whole parallel run had produced them.
 
@@ -50,6 +53,7 @@ russ. "Baumstämme", Kursvo ≈ kurva (PL/SR), Morvik ⊃ "Mord", мор = Pest,
 Galna = schwed. verrückt, Kelnor ≈ Kellner, Hasvik ⊃ "Hass", Gelvik ≈ pelvic.
 Pultena ≈ puttana, Griffa ≈ span. grifa (Marihuana), Tafero ≈ span.
 trafero (Drogenkurier), Pulteo ≈ PulteGroup.
+Wivalde ≈ Vivaldi (Browser); -vena klingt medizinisch (Vene).
 Famous near-names: Swaroni → Swarovski, Zendon → Zendesk.
 
 ## Tooling
@@ -93,3 +97,7 @@ Famous near-names: Swaroni → Swarovski, Zendon → Zendesk.
   download the CSV via `…/marke/trefferliste.navigationleiste.aktionsmenue:herunterladencsv`.
 - WebSearch budget: ~200 calls per session, shared by all agents; six
   parallel agents burned it fast. Web search goes last and is rationed.
+- dpma-search.py output was buffered in background runs (now flushes).
+- DPMA detail pages work only inside a search session (EM: relative link
+  `registerHABM?AKZ=` from the result list; DE: `marke/register/<nr>/DE` in
+  the same session). Opened directly they redirect.

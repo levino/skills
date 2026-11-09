@@ -23,8 +23,14 @@ file number and owner. Calibrated 2026-11: zendesk -> 14, swarovski -> 367,
 xqzvupt -> 0. Fresh filings appear only after a few weeks: re-check before
 buying. Wildcard '*' after 6+ letters is rejected by DPMA ("Ungültige
 Platzhalterverwendung"), so it is skipped for long names.
+Probe an ending's trademark density first: dpma-search.py --all '*alde'.
+Detail pages work only inside a search session (EM via the relative link
+registerHABM?AKZ= from the result list, DE via marke/register/<nr>/DE);
+opened directly they redirect. --classes avoids that.
 """
-import sys, re, html, time, json, urllib.request, urllib.parse, http.cookiejar
+import sys, re, html, time, json, urllib.request, urllib.parse, http.cookiejar, functools
+
+print = functools.partial(print, flush=True)  # unbuffered output for background runs
 
 ROOT = "https://register.dpma.de"
 UA = {"User-Agent": "Mozilla/5.0 (brand-name-finder)"}
