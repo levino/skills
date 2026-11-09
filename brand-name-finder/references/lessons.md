@@ -46,6 +46,11 @@ Semantic track for groupware (small story, not overdone): lat. *nuntius*
 - Onset density (two-syllable round): almost all of ~50 trademark deaths
   started with Gr-/Kr-/Fr-/Bl-/Br-; Pf-/Schw-/Schl- names got through 21 of
   ~25, usually with .com free.
+- Middle clusters: bare two-syllable names with a two-consonant middle
+  (-nd-, -rk-, -lt-, -sk-, -nk-) passed 7 of 47; consonant + cluster + l/r +
+  vowel (-rbl-, -skr-, -nkl-, -ftl-) passed ~11 of 30, usually with .com free.
+- Endings that collide with big abbreviation brands: -kra (DEKRA), -ska
+  (Iskra), -ndo (BANDO).
 - Ending density: soft -a/-o names died mostly on near-miss marks, not on
   domains. A wildcard DPMA probe per ending predicts it: -alde/-elde got 8 of
   9 names through (.com included).
@@ -130,3 +135,5 @@ Famous near-names: Swaroni → Swarovski, Zendon → Zendesk.
   despite an overlapping class). Fix: one written kill rule for all agents,
   separate counts for unresolved names, and one uniform final verification
   pass with the final script version before presenting.
+- DPMA timed out after ~25 names in a row → dpma-search.py retries with
+  backoff (5/15/45 s); run batches of ≤ 20.
