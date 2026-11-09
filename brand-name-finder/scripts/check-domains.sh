@@ -6,9 +6,11 @@
 #   check-domains.sh -t all < names.txt          # one name per line on stdin
 #
 # Output (TSV on stdout): name  tld  status  method
-#   status: free | taken | unknown
+#   status: free | taken | likely-free | unknown
 #   unknown means: this TLD could not be checked reliably from this machine.
-#   NEVER report "unknown" as free.
+#   likely-free means: only DNS could be asked (no NS records). Registered
+#   domains without nameservers exist, so say "wahrscheinlich frei (nur DNS)".
+#   NEVER report "unknown" or "likely-free" as free.
 #
 # How it works:
 #   1. RDAP via the IANA bootstrap file (data.iana.org/rdap/dns.json),
@@ -17,7 +19,9 @@
 #   2. For TLDs without RDAP (.eu, .co, .at, ...), fall back to WHOIS on port 43
 #      (needs the `whois` command and outbound port 43 — works on a normal
 #      computer, usually NOT in sandboxes/proxies).
-#   3. Calibration: before trusting a TLD, query nic.<tld> or a known-taken
+#   3. If WHOIS is not possible, DNS over HTTPS (cloudflare-dns.com): NS records
+#      = taken, NXDOMAIN = likely-free.
+#   4. Calibration: before trusting a TLD, query nic.<tld> or a known-taken
 #      domain AND a random gibberish domain. If they don't give different
 #      answers, every result for that TLD is reported as "unknown".
 #
@@ -89,10 +93,24 @@ whois_status() {  # $1 = domain, $2 = server
   if echo "$out" | grep -Eqi "$FREE_RE"; then echo free; else echo taken; fi
 }
 
+dns_status() {    # $1 = domain → taken | likely-free | unknown  (DNS over HTTPS)
+  # Weaker than RDAP/WHOIS: a domain can be registered without nameservers.
+  # So NXDOMAIN is only "likely-free", never "free".
+  local st
+  st=$(curl -s --max-time 10 -H 'accept: application/dns-json' \
+        "https://cloudflare-dns.com/dns-query?name=$1&type=NS" | jq -r '.Status // empty' 2>/dev/null)
+  case $st in 0) echo taken ;; 3) echo likely-free ;; *) echo unknown ;; esac
+}
+
 check() {         # $1 = domain, $2 = tld → "status<TAB>method"
-  if [ -n "${RDAP[$2]:-}" ]; then echo -e "$(rdap_status "$1" "${RDAP[$2]}")\trdap"
-  elif [ -n "${WHOIS_SRV[$2]:-}" ]; then echo -e "$(whois_status "$1" "${WHOIS_SRV[$2]}")\twhois"
-  else echo -e "unknown\tnone"; fi
+  local r
+  if [ -n "${RDAP[$2]:-}" ]; then echo -e "$(rdap_status "$1" "${RDAP[$2]}")\trdap"; return; fi
+  if [ -n "${WHOIS_SRV[$2]:-}" ]; then
+    r=$(whois_status "$1" "${WHOIS_SRV[$2]}")
+    [ "$r" != unknown ] && { echo -e "$r\twhois"; return; }
+  fi
+  # No RDAP, WHOIS unavailable (typical in sandboxes: port 43 blocked) → DNS.
+  echo -e "$(dns_status "$1")\tdns"
 }
 
 # --- calibration -------------------------------------------------------------
@@ -102,7 +120,7 @@ for tld in $TLDS; do
   taken=$(check "nic.$tld" "$tld" | cut -f1)
   [ "$taken" != taken ] && taken=$(check "google.$tld" "$tld" | cut -f1)
   free=$(check "$GIB.$tld" "$tld" | cut -f1)
-  if [ "$taken" = taken ] && [ "$free" = free ]; then OK[$tld]=1
+  if [ "$taken" = taken ] && { [ "$free" = free ] || [ "$free" = likely-free ]; }; then OK[$tld]=1
   else OK[$tld]=0; echo "# .$tld cannot be checked reliably here (taken→$taken, gibberish→$free); results will be 'unknown'" >&2
   fi
 done

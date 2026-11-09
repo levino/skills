@@ -22,15 +22,20 @@ exists because it was broken there.
 2. **Check .com, .ai and .io always**, whatever TLD the user wants. For a
    software / AI product these are where competitors live. A taken .ai with an
    active site in a related field kills the name.
-3. **Look at what is on every taken domain** (`scripts/site-info.sh`). "Taken"
+3. **A taken domain is not a dead name.** Someone bought it — so what. The
+   name is dead only if (a) an active business in the same or a neighbouring
+   field runs there, (b) a big business of any field uses it (or a
+   near-identical sound: Kovanta ≈ Covanta), or (c) a live trademark exists in
+   classes 9/35/38/42. Parked / for sale on .com is fine if .de/.ai are free.
+4. **Look at what is on every taken domain** (`scripts/site-info.sh`). "Taken"
    can mean parked, for sale (often buyable) or an active competitor —
    completely different verdicts.
-4. **Search the bare name first** (`"swavo"`), then `swavo.ai`, `swavo app`,
+5. **Search the bare name first** (`"swavo"`), then `swavo.ai`, `swavo app`,
    `swavo software`. Do not search `"X" OR "Y" OR "Z" company` — mixed queries
    return noise and hide the real hit.
-5. **Show the user only names that passed.** Do not list what is taken unless
+6. **Show the user only names that passed.** Do not list what is taken unless
    asked. Do not present unchecked names as candidates.
-6. **Calibrate every lookup method** before trusting it: a known-taken domain
+7. **Calibrate every lookup method** before trusting it: a known-taken domain
    must come back taken and gibberish must come back free. The `.eu` check
    via rdap.org returned 404 for *everything* (there is no .eu RDAP) and was
    reported as "free" — that is the failure mode to prevent.
@@ -77,7 +82,16 @@ consonant start (often a cluster like sw-, gr-, fl-), v or n in the middle,
 friendly-technical but not childish: Lumo, Kado, Nuvo, Tava, Zubio, Gravo,
 Swivo, Flinto, Swavo, Svento. (All of these turned out to be in use.)
 
+Also offer a **semantic** track: names with a small, not overdone story
+from the product's world (for groupware: messenger, letters, office,
+archive, commons — lat. *nuntius* Bote, *tablinum* Aktenraum, Munin = Odins
+Rabe der Erinnerung). No "group/team/mail" puns.
+
 ### 4. Generate within the agreed pattern
+Facts from the Swavo rename (Nov 2026): of 104 five-letter CCVCV/-o names,
+every .com and 90 % of .de were registered. Plan for 6–7 letters, or accept
+a registered-but-parked .com. Many -ano/-avo/-ino names in a row sound
+Italian — vary endings.
 Now produce many candidates (by hand + optionally a generator constrained to
 the agreed pattern). Pre-filter by ear: read each one aloud in German and
 English. Drop anything you would not put on a business card.
@@ -100,7 +114,9 @@ For each shortlisted name (aim for 10–20):
 3. **Web search**, one search per name, bare name in quotes, plus
    `"name" software` and `"name" app`. Also look for near-misses one letter
    off in the same field (Swovo vs Swavo, Zendon vs Zendo, Mevon vs Mevo).
-4. **Trademarks:** TMview (https://www.tmdn.org/tmview — covers DPMA, EUIPO,
+4. **Trademarks:** Scripted TMview access (headless browser) was blocked as
+   bot-check circumvention — don't. Use the official EUIPO trademark search
+   API (free registration, API key) or let the user search TMview (https://www.tmdn.org/tmview — covers DPMA, EUIPO,
    USPTO, national offices; use fuzzy search) for the name and its near
    misses, classes 9, 35, 38, 42. DPMAregister for Germany. Needs a browser.
 5. **Meaning / mockery check:** What does it mean or sound like in German,
@@ -130,5 +146,10 @@ when anything near-identical exists in the EU.
 - `scripts/check-domains.sh` — RDAP (IANA bootstrap + overrides for .de, .io,
   .ch, .li) with WHOIS fallback and per-TLD calibration. TSV output:
   `name tld free|taken|unknown method`.
+  Without WHOIS (port 43 blocked in sandboxes) it falls back to DNS over
+  HTTPS: `likely-free` = no NS records — report as "wahrscheinlich frei".
+  Fast pre-filter: run several chunks in parallel (`split` + `xargs -P8`,
+  `DELAY=0.1`), `-t "de com ai io app"` first, full list only for survivors.
 - `scripts/site-info.sh` — classifies registered domains as
-  `for-sale | parked | active | no-site` with final URL and page title.
+  `for-sale | parked | active | blocked | no-site` with final URL and title.
+  `blocked` = bot challenge / error page: content unknown, look via search.
