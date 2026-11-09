@@ -62,7 +62,8 @@ Short names are nearly all registered (5 letters: every .com, ~90 % .de).
 Plan for 6–7 letters or accept a parked .com. Vary endings: a pattern
 saturates fast (one ending made up 30 of the survivors in a single run).
 Before generating at scale, probe the trademark density of candidate endings
-with a wildcard query (`dpma-search.py --all '*ova'`, `'*alde'`) and prefer
+with a wildcard query (`dpma-search.py --all '*alde'`; `*` works only with
+~4-letter stems and undercounts, so read it as a lower bound) and prefer
 endings with few marks: near-miss marks, not domains, kill most soft -a/-o
 names. Still don't let one ending dominate.
 Read every name aloud in German and English; drop what you wouldn't put on

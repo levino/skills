@@ -3,8 +3,8 @@
 
 Usage:
   dpma-search.py telvik ovanda        exact word
-  dpma-search.py -n telvik            near misses: every letter replaced by '?'
-                                      (+ name* for names < 7 letters). Only hits
+  dpma-search.py -n telvik            near misses: every letter replaced by '?'.
+                                      Only hits
                                       whose mark text is within Levenshtein 1 of
                                       the name (after sound normalisation v/w,
                                       c/k, ph/f, y/i) are printed.
@@ -21,9 +21,12 @@ Uses the public SmartSearch JSON endpoint (no login, no captcha); the Basis
 form needs JavaScript and can't be scripted. The search covers mark text,
 file number and owner. Calibrated 2026-11: zendesk -> 14, swarovski -> 367,
 xqzvupt -> 0. Fresh filings appear only after a few weeks: re-check before
-buying. Wildcard '*' after 6+ letters is rejected by DPMA ("Ungültige
-Platzhalterverwendung"), so it is skipped for long names.
-Probe an ending's trademark density first: dpma-search.py --all '*alde'.
+buying. Wildcards: '?' (one letter) is reliable (swarovsk? -> 371). '*' is
+NOT: it works only with very short stems and silently undercounts
+(swarov* -> 0, *rovski -> 0, zende* -> 0, though the marks exist; long
+stems give "Ungültige Platzhalterverwendung"). So -n uses '?' only.
+Rough ending-density probe: dpma-search.py --all '*alde' (4-letter
+endings return hits, e.g. *desk -> 352); treat it as a lower bound.
 Detail pages work only inside a search session (EM via the relative link
 registerHABM?AKZ= from the result list, DE via marke/register/<nr>/DE);
 opened directly they redirect. --classes avoids that.
@@ -99,8 +102,7 @@ def near_hit(name, text):
 
 
 def variants(n):
-    v = [n] + [n[:i] + "?" + n[i + 1:] for i in range(len(n))]
-    return v + ([n + "*"] if len(n) < 7 else [])
+    return [n] + [n[:i] + "?" + n[i + 1:] for i in range(len(n))]
 
 
 if __name__ == "__main__":

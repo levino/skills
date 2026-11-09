@@ -101,3 +101,7 @@ Famous near-names: Swaroni → Swarovski, Zendon → Zendesk.
 - DPMA detail pages work only inside a search session (EM: relative link
   `registerHABM?AKZ=` from the result list; DE: `marke/register/<nr>/DE` in
   the same session). Opened directly they redirect.
+- DPMA SmartSearch wildcards: `?` is reliable (swarovsk? → 371), `*` is not:
+  swarov* → 0, *rovski → 0, zende* → 0 although the marks exist; short stems
+  work (*desk → 352, zend* → 12). The near-miss search therefore uses `?`
+  only; the `name*` variant was dropped.
