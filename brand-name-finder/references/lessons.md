@@ -119,3 +119,9 @@ Famous near-names: Swaroni → Swarovski, Zendon → Zendesk.
   möglich). Live: eingetragen, Schutz bewilligt, Anmeldung eingegangen /
   veröffentlicht / im Prüfungsverfahren, Widerspruch eingelegt, Vorläufiger
   Schutz, Schutz unbekannt (check by hand).
+- Process failure: names flagged "safe*" (classes unreadable) were added to
+  the safe count, and 5 of them died on the recheck. Parallel agents also
+  judged near marks inconsistently ("different field" from a web search
+  despite an overlapping class). Fix: one written kill rule for all agents,
+  separate counts for unresolved names, and one uniform final verification
+  pass with the final script version before presenting.

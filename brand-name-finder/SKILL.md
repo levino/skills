@@ -13,7 +13,9 @@ name had been registered and filed as a trademark. Details: `references/lessons.
 ## Hard rules
 
 1. **Never call a name free before all checks in step 5 passed.** A check
-   that could not run is "nicht geprüft". Unknown is never free.
+   that could not run is "nicht geprüft". Unknown is never free. A name with
+   an unresolved check (e.g. `classes?`) is not safe: count it separately
+   and never add the counts up (5 such names died on the recheck once).
 2. **Always check .com, .ai, .io, .app**, whatever TLD the user wants.
    Competitors live there; many names with a free .de died on an active
    .ai/.app SaaS.
@@ -74,7 +76,8 @@ a business card.
 
 ### 5. Check — cheap first, stop at the first hard fail
 Parallel background agents: give each a distinct style or letter band and a
-shared claimed-names file (append under `flock`, skip names already in it).
+shared claimed-names file (append under `flock`, skip names already in it),
+and the same precise kill rules (below). No judgment calls "by field".
 
 1. **Ear + meaning / mockery** (costs nothing, kills many): DE, EN, FR, ES,
    IT, PL, TR, RU/Serbian, NL. Drug names, slurs, rude near-words, how
@@ -86,8 +89,11 @@ shared claimed-names file (append under `flock`, skip names already in it).
    `scripts/dpma-search.py -n --classes names…` (DE + EU + IR marks;
    one-letter-off variants, filtered to Levenshtein ≤ 1 on the mark text
    after sound normalisation (owner-name-only matches drop out), Nice
-   classes per live hit). A live near hit in classes 9/35/38/42 → **dead**;
-   `classes?` → look it up before trusting. Recent EU applications count
+   classes per live hit). **Rule:** any live mark within Levenshtein 1
+   (after sound normalisation) whose classes intersect 9/35/38/42 → **dead**.
+   Only exception: overlap in class 35 alone and the business clearly
+   unrelated → "Vorsicht". A web search saying "different field" never
+   overrides an overlapping class. `classes?` → unresolved, not safe. Recent EU applications count
    (one filed the month before killed a name). Fresh filings appear only
    after weeks. Optional, in the user's browser: TMview
    (https://www.tmdn.org/tmview) for non-EU offices (USPTO, UK, CH). Don't
@@ -110,7 +116,12 @@ shared claimed-names file (append under `flock`, skip names already in it).
 6. **"Have I heard this?"**: "Ich habe mal eine Marke gehört, die ungefähr
    wie XYZ klang — welche?" Catches Swaroni → Swarovski, Zendon → Zendesk.
 
-### 6. Present
+### 6. Final verification, then present
+Before presenting, run ONE uniform pass over all finalists with the same
+script version: `dpma-search.py -n --classes`, sequential RDAP for .de and
+.com (and the other required TLDs), a web check. Only names that pass it are
+shown as safe. Tool changes during a run (a new option, a fixed bug) are a
+reason to re-verify earlier results.
 Table of survivors only: name, idea, domains (free / for sale), closest
 near-miss, trademark result, meaning check, verdict. List checks not done.
 
