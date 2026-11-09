@@ -58,8 +58,11 @@ categories to exclude.
 - Known dislikes and likes: `references/lessons.md`.
 
 ### 4. Generate within the agreed pattern
-Default to 6–7 letters. 5-letter names are nearly all registered (every
-.com, ~90 % .de) and crowded by marks one letter off. Vary endings: a pattern
+Default to 6–7 letters with a rare consonant combination (Pl-, Sl-, Zw-;
+-mv-, -nv-, -lv-): those survived at ~60 %, five-letter -o/-i names at ~15 %
+(nearly all registered and crowded by marks one letter off). Zw- reads
+clearly German and is mark-free but hard for English speakers: present it
+as a deliberate trade-off. Vary endings: a pattern
 saturates fast (one ending made up 30 of the survivors in a single run).
 Before generating at scale, probe the trademark density of candidate endings
 with a wildcard query (`dpma-search.py --all '*alde'`; `*` works only with
@@ -95,6 +98,8 @@ shared claimed-names file (append under `flock`, skip names already in it).
    `… | awk '$3=="taken"{print $1"."$2}' | scripts/site-info.sh`
    - `for-sale` → note price; `parked` → keep, note.
    - `active` → open it. Software / SaaS / AI / business tools → **dead**.
+     Look even when the name seems harmless (one candidate's domain hosted
+     a porn site).
    - `blocked` → content unknown, check via web search.
    Report DNS-only results as "wahrscheinlich frei", to confirm before buying.
 5. **Web search, last** (rule 5), only for names that survived everything

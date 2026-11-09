@@ -41,6 +41,8 @@ Semantic track for groupware (small story, not overdone): lat. *nuntius*
 - 6 letters beat 5: in a 5-letter round 41 of 101 had .de free and 16 of
   the 20 survivors died on marks one letter off; in a 6-letter round 33 of
   39 had .de free, with far fewer near marks.
+- Rare consonant combinations win: 6 letters with Pl-/Sl-/Zw- plus
+  -mv-/-nv-/-lv- survived at ~60 %, five-letter -o/-i names at ~15 %.
 - Ending density: soft -a/-o names died mostly on near-miss marks, not on
   domains. A wildcard DPMA probe per ending predicts it: -alde/-elde got 8 of
   9 names through (.com included).
@@ -58,6 +60,8 @@ Pultena ≈ puttana, Griffa ≈ span. grifa (Marihuana), Tafero ≈ span.
 trafero (Drogenkurier), Pulteo ≈ PulteGroup.
 Wivalde ≈ Vivaldi (Browser); -vena klingt medizinisch (Vene).
 Flemvi ≈ phlegm, Klavu ≈ klauen.
+Prelvo ≈ ital. prelievo (Blutabnahme), Malvu = franz. "mal vu", Silvu ≈
+"s'il vous", Zwulvo ≈ Vulva, Slavmo (ethnische Konnotation).
 Famous near-names: Swaroni → Swarovski, Zendon → Zendesk.
 
 ## Tooling
