@@ -71,21 +71,28 @@ shared claimed-names file (append under `flock`, skip names already in it).
 1. **Ear + meaning / mockery** (costs nothing, kills many): DE, EN, FR, ES,
    IT, PL, TR, RU/Serbian, NL. Drug names, slurs, rude near-words, how
    people would mock it (examples in `references/lessons.md`).
-2. **Domains:** `scripts/check-domains.sh -t "de com ai io app" names…`,
-   full list (`-t all`) for survivors.
-3. **Taken domains:** `… | awk '$3=="taken"{print $1"."$2}' | scripts/site-info.sh`
+2. **Domain prefilter:** `scripts/check-domains.sh -p -t "de ai" names…`
+   (DNS over HTTPS only: no rate limits, results `taken | likely-free`).
+   Keep names with .de and .ai likely free (or .ai parked/for sale).
+3. **Trademarks** (cheap, kills ~60 % of what is left):
+   `scripts/dpma-search.py -n --classes names…` (DE + EU + IR marks;
+   one-letter-off variants, filtered to Levenshtein ≤ 1 on the mark text
+   after sound normalisation (owner-name-only matches drop out), Nice
+   classes per live hit). A live near hit in classes 9/35/38/42 → **dead**;
+   `classes?` → look it up before trusting. Recent EU applications count
+   (one filed the month before killed a name). Fresh filings appear only
+   after weeks. Optional, in the user's browser: TMview
+   (https://www.tmdn.org/tmview) for non-EU offices (USPTO, UK, CH). Don't
+   script TMview.
+4. **Web search** (rule 5), plus near-misses one letter off in the same field.
+5. **All TLDs + taken domains:** `scripts/check-domains.sh -t "de com ai io app eu co net org dev" finalists…`
+   (RDAP, sequential, `DELAY≥0.5`: DENIC, .ai and .io all rate-limit under
+   parallel load), then
+   `… | awk '$3=="taken"{print $1"."$2}' | scripts/site-info.sh`
    - `for-sale` → note price; `parked` → keep, note.
    - `active` → open it. Software / SaaS / AI / business tools → **dead**.
    - `blocked` → content unknown, check via web search.
-4. **Web search** (rule 5), plus near-misses one letter off in the same field.
-5. **Trademarks:** `scripts/dpma-search.py -n --classes names…` (DE + EU +
-   IR marks; one-letter-off variants, filtered to Levenshtein ≤ 1 after
-   sound normalisation, Nice classes per live hit). A live near hit in
-   classes 9/35/38/42 → **dead**; `classes?` → look it up before trusting.
-   Recent EU applications count (one filed the month before killed a name).
-   Fresh filings appear only after weeks.
-   Optional, in the user's browser: TMview (https://www.tmdn.org/tmview)
-   for non-EU offices (USPTO, UK, CH). Don't script TMview.
+   Report DNS-only results as "wahrscheinlich frei", to confirm before buying.
 6. **"Have I heard this?"**: "Ich habe mal eine Marke gehört, die ungefähr
    wie XYZ klang — welche?" Catches Swaroni → Swarovski, Zendon → Zendesk.
 
@@ -103,8 +110,9 @@ trademark lawyer if anything near-identical exists in the EU.
 - `check-domains.sh`: RDAP (IANA bootstrap + overrides) → WHOIS → DNS over
   HTTPS (`likely-free` = no NS records, say "wahrscheinlich frei"). WHOIS
   is blocked in sandboxes; RDAP works but rate-limits (429, esp. .ai/.io)
-  under parallel load → automatic backoff, then DNS (`dns-fallback`).
-  Fast: split the list, `xargs -P8`; `DELAY≥0.5` when agents run in parallel.
+  under parallel load (.de too, esp. .ai/.io) → automatic backoff, then DNS
+  (`dns-fallback`). `-p` = DNS-only prefilter for long lists; RDAP only for
+  finalists, sequentially.
 - `site-info.sh`: `for-sale | parked | active | blocked | no-site` per domain.
 - `dpma-search.py`: DPMAregister SmartSearch (public JSON, no login).
   `-n` near misses (filtered; `--all` unfiltered), `--classes` Nice classes

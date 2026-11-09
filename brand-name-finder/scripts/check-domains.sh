@@ -4,6 +4,9 @@
 # Usage:
 #   check-domains.sh [-t "de app com eu"] name1 [name2 ...]
 #   check-domains.sh -t all < names.txt          # one name per line on stdin
+#   check-domains.sh -p -t "de ai" names...      # prefilter: DNS over HTTPS only
+#                                                # (fast, no RDAP rate limits;
+#                                                # results are taken|likely-free)
 #
 # Output (TSV on stdout): name  tld  status  method
 #   status: free | taken | likely-free | unknown
@@ -36,10 +39,12 @@ ALL_TLDS="de com app eu io ai net org co dev ch at li info biz xyz tech cloud on
 TLDS="$DEFAULT_TLDS"
 DELAY="${DELAY:-0.3}"        # seconds between requests (be polite, avoid 429)
 
-while getopts "t:" opt; do
+PREFILTER=0
+while getopts "pt:" opt; do
   case $opt in
+    p) PREFILTER=1 ;;
     t) if [ "$OPTARG" = all ]; then TLDS="$ALL_TLDS"; else TLDS="$OPTARG"; fi ;;
-    *) echo "usage: $0 [-t 'de com app' | -t all] name..." >&2; exit 2 ;;
+    *) echo "usage: $0 [-p] [-t 'de com app' | -t all] name..." >&2; exit 2 ;;
   esac
 done
 shift $((OPTIND - 1))
@@ -106,6 +111,7 @@ dns_status() {    # $1 = domain → taken | likely-free | unknown  (DNS over HTT
 
 check() {         # $1 = domain, $2 = tld → "status<TAB>method"
   local r
+  if [ "$PREFILTER" = 1 ]; then echo -e "$(dns_status "$1")\tdns"; return; fi
   if [ -n "${RDAP[$2]:-}" ]; then
     r=$(rdap_status "$1" "${RDAP[$2]}")
     # RDAP rate-limits (429) under parallel load, notably .ai/.io → DNS fallback.
