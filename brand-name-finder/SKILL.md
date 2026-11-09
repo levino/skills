@@ -62,9 +62,10 @@ categories to exclude.
 ### 4. Generate within the agreed pattern
 Default to 6–7 letters with a rare consonant combination (Pl-, Sl-, Zw-;
 -mv-, -nv-, -lv-): those survived at ~60 %, five-letter -o/-i names at ~15 %
-(nearly all registered and crowded by marks one letter off). Zw- reads
-clearly German and is mark-free but hard for English speakers: present it
-as a deliberate trade-off. Vary endings: a pattern
+(nearly all registered and crowded by marks one letter off). Onsets matter
+too: Gr-/Kr-/Fr-/Bl-/Br- are densely registered; Zw-/Pf-/Schw-/Schl- are
+nearly mark-free and read clearly German but are hard for non-Germans:
+present that as a deliberate trade-off. Vary endings: a pattern
 saturates fast (one ending made up 30 of the survivors in a single run).
 Before generating at scale, probe the trademark density of candidate endings
 with a wildcard query (`dpma-search.py --all '*alde'`; `*` works only with
@@ -80,7 +81,8 @@ shared claimed-names file (append under `flock`, skip names already in it),
 and the same precise kill rules (below). No judgment calls "by field".
 
 1. **Ear + meaning / mockery** (costs nothing, kills many): DE, EN, FR, ES,
-   IT, PL, TR, RU/Serbian, NL. Drug names, slurs, rude near-words, how
+   IT, PL, TR, RU/Serbian, NL. Drug names, slurs, rude near-words,
+   sound-alike abbreviations and technical terms (Pfaske ≈ PFAS), how
    people would mock it (examples in `references/lessons.md`).
 2. **Domain prefilter:** `scripts/check-domains.sh -p -t "de ai" names…`
    (DNS over HTTPS only: no rate limits, results `taken | likely-free`).
@@ -109,7 +111,8 @@ and the same precise kill rules (below). No judgment calls "by field".
    - `blocked` → content unknown, check via web search.
    Report DNS-only results as "wahrscheinlich frei", to confirm before buying.
 5. **Web search, last** (rule 5), only for names that survived everything
-   else, plus near-misses one letter off in the same field. The web-search
+   else, plus near-misses one letter off in the same field (spell c/k, v/w,
+   ph/f variants too: Glirko ≈ glirc, an IRC client). The web-search
    budget is limited (~200 calls per session, shared by all agents): split
    it between parallel agents up front. Budget gone → label the name
    "Websuche offen", never safe. Don't scrape search engines with curl.
