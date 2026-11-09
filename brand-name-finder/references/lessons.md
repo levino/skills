@@ -49,6 +49,11 @@ Semantic track for groupware (small story, not overdone): lat. *nuntius*
 - Middle clusters: bare two-syllable names with a two-consonant middle
   (-nd-, -rk-, -lt-, -sk-, -nk-) passed 7 of 47; consonant + cluster + l/r +
   vowel (-rbl-, -skr-, -nkl-, -ftl-) passed ~11 of 30, usually with .com free.
+- Vowel-initial two-syllable names died at the trademark check 9 of 9 (they
+  sit next to Romance words inside word marks). Hard onset (Dr-/Kl-/Pr-/Tr-)
+  + rare middle (-lk-/-lp-/-rd-/-lf-) + -e/-i passed 21 of 84. Names whose
+  core is a common word (store, prende, stelle, sobre) die on longer marks
+  containing it, as intended.
 - Endings that collide with big abbreviation brands: -kra (DEKRA), -ska
   (Iskra), -ndo (BANDO).
 - Ending density: soft -a/-o names died mostly on near-miss marks, not on
@@ -137,3 +142,6 @@ Famous near-names: Swaroni → Swarovski, Zendon → Zendesk.
   pass with the final script version before presenting.
 - DPMA timed out after ~25 names in a row → dpma-search.py retries with
   backoff (5/15/45 s); run batches of ≤ 20.
+- Bug fixed: a variant query that errored after all retries still produced
+  "(0 live)" in the summary, so the name looked clean. Now the summary says
+  "(UNRESOLVED: k variant errors)".

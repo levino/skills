@@ -31,7 +31,8 @@ Detail pages work only inside a search session (EM via the relative link
 registerHABM?AKZ= from the result list, DE via marke/register/<nr>/DE);
 opened directly they redirect. --classes avoids that.
 Retries timeouts/HTTP errors with backoff (5/15/45 s); ERROR only after the
-last try. A name with an ERROR line is unresolved, not safe. Batches of <= 20
+last try. A name with an ERROR line is unresolved, not safe; its summary
+line then says "(UNRESOLVED: k variant errors)" instead of "(n live)". Batches of <= 20
 names per call.
 """
 import sys, re, html, time, json, urllib.request, urllib.parse, http.cookiejar, functools
@@ -123,13 +124,14 @@ if __name__ == "__main__":
     args = sys.argv[1:]
     near, show_all, want_cls = "-n" in args, "--all" in args, "--classes" in args
     for name in [a for a in args if not a.startswith("-")]:
-        seen, live = {}, 0
+        seen, live, errors = {}, 0, 0
         for q in (variants(name.lower()) if near else [name]):
             try:
                 for r in search(q):
                     seen.setdefault(r[1], (q,) + r)
             except Exception as e:
                 print(f"{name}\tERROR\t{q}\t{e}")
+                errors += 1
             time.sleep(0.5)
         hits = [h for h in seen.values()
                 if not near or show_all or near_hit(name, h[4])]
@@ -138,4 +140,5 @@ if __name__ == "__main__":
             extra = [classes(nr)] if want_cls and alive else ([""] if want_cls else [])
             print(name, q, reg, nr, st, txt, *extra, sep="\t")
             live += alive
-        print(f"{name}\tHITS\t{len(hits)}\t({live} live)")
+        status = f"UNRESOLVED: {errors} variant errors" if errors else f"{live} live"
+        print(f"{name}\tHITS\t{len(hits)}\t({status})")

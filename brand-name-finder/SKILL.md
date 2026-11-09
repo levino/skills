@@ -65,7 +65,9 @@ Default to 6–7 letters with a rare consonant combination (Pl-, Sl-, Zw-;
 (nearly all registered and crowded by marks one letter off). Onsets matter
 too: Gr-/Kr-/Fr-/Bl-/Br- are densely registered; Zw-/Pf-/Schw-/Schl- are
 nearly mark-free and read clearly German but are hard for non-Germans:
-present that as a deliberate trade-off. Check endings against well-known
+present that as a deliberate trade-off. Avoid vowel onsets and common
+Romance/English words as syllable cores (store, prende, stelle, sobre): they
+sit inside many word marks. Check endings against well-known
 abbreviation brands (-kra ≈ DEKRA, -ska ≈ Iskra, -ndo ≈ BANDO). Vary endings: a pattern
 saturates fast (one ending made up 30 of the survivors in a single run).
 Before generating at scale, probe the trademark density of candidate endings
@@ -96,7 +98,8 @@ and the same precise kill rules (below). No judgment calls "by field".
    (after sound normalisation) whose classes intersect 9/35/38/42 → **dead**.
    Only exception: overlap in class 35 alone and the business clearly
    unrelated → "Vorsicht". A web search saying "different field" never
-   overrides an overlapping class. `classes?` or `ERROR` → unresolved, not safe. Batches of ≤ 20 names
+   overrides an overlapping class. `classes?`, `ERROR` or a summary line `(UNRESOLVED: …)` → unresolved,
+   not safe. Batches of ≤ 20 names
    (DPMA times out after ~25 in a row; the script retries with backoff). Recent EU applications count
    (one filed the month before killed a name). Fresh filings appear only
    after weeks. Optional, in the user's browser: TMview
