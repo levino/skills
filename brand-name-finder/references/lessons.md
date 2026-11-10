@@ -201,3 +201,30 @@ Drillpe, Grimpu, Tulfe, Drullmo, and "rirfu / lulfu" types).
   thousands of free .com+.de combinations (pattern C V l/m/n/r V
   nd/nt/mb/ld/rd a/o: about 10k free .com of 17k). 2-syllable and
   vowel-initial 5-letter (Opodo-type) names are nearly exhausted on .com.
+
+## Coveted, not empty (user feedback from a real run)
+
+"We are not looking for empty names but a great name; whatever is coveted is
+the right direction; the last free name among the most coveted ones."
+
+- Free .com = nobody wanted it. Measured: 5-letter CVCVC/VCVCV (consonants
+  bdfgklmnprst, vowels aeiou): 96% of .com taken, the ~1,150 free are junk
+  (ubupo, ogufu). 6-letter CVCVCV: 216k combos, 56% taken; the good-sounding
+  ones are mostly taken. Model-generated names (prompted with brand-structure
+  rules): 87% of 587 had .com taken, i.e. the generator hits the coveted region.
+- DNS-NXDOMAIN "free" is often registered without nameservers: confirm with
+  RDAP (rdap.verisign.com/com/v1/domain/X.com, 404 = free).
+- The coveted region is trademark-dense: of 60 top-coveted 6-letter names with
+  free .de only 8 survived DPMA Lev<=1 in classes 09/35/38/42.
+- Ranking: `scripts/desirability.py` on the complete space (dns-bulk output):
+  z(neighbour density: share of one-letter same-class neighbours with .com
+  taken) + z(brand-likeness: letter-bigram log-likelihood trained on
+  references/brands.txt, 219 famous coined brands). Then RDAP the top names;
+  on a parked .com look for expiring (EXPIRED nameservers) or for-sale
+  domains. Target: coveted + free .de + trademark-clean + buyable/expiring .com.
+- Structure of successful coined brands (219): 58% 2 syllables, 35% 3; 5-7
+  letters; ~85% start with a single consonant, 16% with a vowel (25% in the top
+  tier), 11% onset cluster; about half end in a vowel (o, a most common);
+  consonant-vowel alternation with at most one medial cluster.
+- Generation: never hand-invent names; enumerate by script or prompt several
+  models/flavours (200 names each) and filter mechanically.

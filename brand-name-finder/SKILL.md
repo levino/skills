@@ -10,6 +10,9 @@ web, trademarks). Pattern hints, statistics and examples: `references/lessons.md
 
 ## Hard rules
 
+0. **Goal: the last free name in the most coveted sound region**, not any
+   free name. Free .com signals undesirability: never use it as the primary
+   shortlist filter; rank by desirability, then check availability.
 1. **Never call a name free before all checks passed.** A check that could
    not run is "nicht geprüft". Unknown is never free. Unresolved names
    (`classes?`, `ERROR`, `UNRESOLVED`, "Websuche offen") are counted
@@ -109,6 +112,8 @@ if anything near-identical exists in the EU.
   exclude regex, variety caps; `--no-caps` / `--cap-only`.
 - `dns-bulk.py <tld>`: stdin names → `name free|taken|unknown` (Cloudflare
   DoH, 24 threads); free = NXDOMAIN = likely free.
+- `desirability.py space.tsv`: ranks free names of a full pattern space by
+  neighbour density + brand-likeness (see lessons.md, "Coveted, not empty").
 - `check-domains.sh`: RDAP → WHOIS → DNS over HTTPS (`likely-free`); backoff
   on 429, then `dns-fallback`; `-p` = DNS-only prefilter.
 - `site-info.sh`: `for-sale | parked | active | blocked | no-site` per domain.
