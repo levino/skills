@@ -73,6 +73,27 @@ Semantic track for groupware (small story, not overdone): lat. *nuntius*
 - Origin matters: a German company rejected every Nordic-sounding name
   (-vik, -vika, Norse roots) after a whole parallel run had produced them.
 
+## Pattern guidance (moved from SKILL.md)
+- Default to 6–7 letters with a rare consonant combination (Pl-, Sl-, Zw-;
+  -mv-, -nv-, -lv-). Avoid vowel onsets and common Romance/English words as
+  syllable cores (store, prende, stelle, sobre).
+- Zw-/Pf-/Schw-/Schl- onsets are nearly mark-free and read clearly German but
+  are hard for non-Germans: present that as a deliberate trade-off.
+- Check endings against well-known abbreviation brands (-kra ≈ DEKRA, -ska ≈
+  Iskra, -ndo ≈ BANDO). Vary endings; don't let one dominate.
+- Probe the trademark density of an ending before generating at scale:
+  `dpma-search.py --all '*alde'` (`*` works only with ~4-letter stems and
+  undercounts: read it as a lower bound). Near-miss marks, not domains, kill
+  most soft -a/-o names.
+- Read every name aloud in German and English; drop what you wouldn't put on
+  a business card.
+- Checking-agent setup that worked: 4 parallel DPMA streams of ≤ 12 names,
+  ≤ 25 names per checking agent, a smaller model (e.g. Sonnet) is enough.
+  If agents invent names themselves: a distinct style or letter band each and
+  a shared claimed-names file (append under `flock`).
+- Examples behind the rules: 5 names flagged "safe*" died on the recheck; a
+  candidate's domain hosted a porn site; one ending made up 30 survivors.
+
 ## Meaning / mockery kills
 Pibo ≈ pivo (Bier), Bimba ≈ bimbo, Gluvo = taub (serb.), Glevo = Antibiotikum,
 Frento = Tiermedikament, Nasola = Nasenspray, Jahoba ≈ Jehova,
