@@ -49,6 +49,11 @@ back in one or two lines, get a nod. If "alles Mist": change the style axis.
 Offer a semantic track (a small story, no group/team/mail puns).
 
 ### 4. Generate by script
+**Sound before availability:** a free-domain filter must never pick names
+(leftovers are ugly). Hand-pick by ear, show the user a small sample before
+any registry run; use `--dictatable` and 3-syllable open-syllable patterns
+(Zalando/Opodo-like). Details: `references/lessons.md`.
+
 Don't let agents invent names. Enumerate the liked pattern centrally:
 ```
 scripts/generate.py --no-caps --onsets "…" --vowels "…" --middles "…" --endings "…" \

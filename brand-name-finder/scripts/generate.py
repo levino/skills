@@ -38,6 +38,18 @@ def split(name, onsets, vowels, middles, endings):
     return None
 
 
+SOFT = {"nd", "nt", "mb", "ld", "rd"}
+
+
+def dictatable(n):
+    """Sound filter: no v w c q x y z j / umlauts, no word-initial consonant
+    cluster, at most one medial cluster and only a soft one (nd nt mb ld rd)."""
+    if re.search(r"[vwcqxyzjäöüß]", n) or re.match(r"[^aeiou]{2}", n):
+        return False
+    runs = re.findall(r"[^aeiou]{2,}", n)
+    return len(runs) <= 1 and all(r in SOFT for r in runs)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--onsets", required=True)
@@ -54,6 +66,9 @@ def main():
     ap.add_argument("--max-ove", type=int, default=3)
     ap.add_argument("--no-caps", action="store_true", help="enumerate only")
     ap.add_argument("--cap-only", action="store_true", help="read names on stdin, apply caps only")
+    ap.add_argument("--dictatable", action="store_true",
+                    help="keep only names that survive the phone test (no onset cluster, no v/w/c/q/x/y/z/j, "
+                         "max one soft medial cluster nd/nt/mb/ld/rd)")
     ap.add_argument("--seed", type=int, default=1)
     a = ap.parse_args()
 
@@ -68,7 +83,8 @@ def main():
     else:
         names = [o + v + m + e for o in on for v in vo for m in mi for e in en]
     names = [n for n in dict.fromkeys(names)
-             if a.min_len <= len(n) <= a.max_len and n not in seen and not (bad and bad.search(n))]
+             if a.min_len <= len(n) <= a.max_len and n not in seen and not (bad and bad.search(n))
+             and (not a.dictatable or dictatable(n))]
     if a.no_caps:
         print("\n".join(names)); return
 

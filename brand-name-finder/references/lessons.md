@@ -177,3 +177,27 @@ Famous near-names: Swaroni → Swarovski, Zendon → Zendesk.
 - Bug fixed: a variant query that errored after all retries still produced
   "(0 live)" in the summary, so the name looked clean. Now the summary says
   "(UNRESOLVED: k variant errors)".
+
+## Availability filters must not pick names (hard lesson)
+
+A user rejected a whole 170-name list: it had been produced by enumerating a
+pattern and keeping what was free. The good short 2-syllable names are taken,
+so what stays free on .com is leftover junk (rejected: Brelpe, Brempu,
+Drillpe, Grimpu, Tulfe, Drullmo, and "rirfu / lulfu" types).
+
+- **Judge the sound first, by ear, before any registry check.** Ask: would
+  anyone actually name a product this? Show the user a small hand-picked
+  sample before running trademark pipelines.
+- **Dictation rules** (email domain!): no consonant cluster at the word start
+  (bl br dr fl fr gl gr kl kr pl pr tr st ...), at most one soft medial
+  cluster (nd nt mb ld rd); no v/w (listener asks "v or w?"), no c q x y z j,
+  no umlauts; avoid heavy German syllables (dr, br, gr, chr). Phone test: say
+  "<name>mail.de" once; the listener must write it correctly.
+  `generate.py --dictatable` enforces the mechanical part; the ear check
+  stays manual.
+- **Good model:** melodic open-syllable names like Zalando, Opodo
+  (consonant-vowel alternation, 3 syllables, vowel variety).
+- **Where free names still exist:** 3-syllable CVCV(N)CV patterns have
+  thousands of free .com+.de combinations (pattern C V l/m/n/r V
+  nd/nt/mb/ld/rd a/o: about 10k free .com of 17k). 2-syllable and
+  vowel-initial 5-letter (Opodo-type) names are nearly exhausted on .com.
