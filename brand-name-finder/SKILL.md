@@ -59,8 +59,20 @@ categories to exclude.
   not overdone, no group/team/mail puns.
 - Known dislikes and likes: `references/lessons.md`.
 
-### 4. Generate within the agreed pattern
-Default to 6–7 letters with a rare consonant combination (Pl-, Sl-, Zw-;
+### 4. Generate within the agreed pattern — by script
+Once the liked pattern is known, don't let agents invent names by hand.
+Enumerate it centrally and filter in bulk:
+```
+scripts/generate.py --no-caps --onsets "…" --vowels "…" --middles "…" --endings "…" \
+    --seen tried.txt --exclude '…' > cands.txt          # e.g. 50k combinations
+for t in de com ai; do scripts/dns-bulk.py $t < cands.txt > $t.tsv; done
+# keep names free on all three, then apply variety caps:
+… | scripts/generate.py --cap-only --onsets "…" … > pool.txt
+```
+(Requiring .de + .com + .ai free still left ~17k of 50k names.) Then a cheap
+LLM ear prefilter (smaller model, no web): drop negative meanings, brand or
+drug sound-alikes, foreign-sounding names, near-duplicates.
+Pattern guidance: default to 6–7 letters with a rare consonant combination (Pl-, Sl-, Zw-;
 -mv-, -nv-, -lv-): those survived at ~60 %, five-letter -o/-i names at ~15 %
 (nearly all registered and crowded by marks one letter off). Onsets matter
 too: Gr-/Kr-/Fr-/Bl-/Br- are densely registered; Zw-/Pf-/Schw-/Schl- are
@@ -79,9 +91,15 @@ Read every name aloud in German and English; drop what you wouldn't put on
 a business card.
 
 ### 5. Check — cheap first, stop at the first hard fail
-Parallel background agents: give each a distinct style or letter band and a
-shared claimed-names file (append under `flock`, skip names already in it),
-and the same precise kill rules (below). No judgment calls "by field".
+Pipeline that worked best: generate → bulk DNS (.de + .com + .ai) → variety
+caps → LLM ear prefilter → `dpma-search.py -n --classes` (4 parallel
+streams of ≤ 12 names) → checking agents for the remaining TLDs, site-info,
+meaning and web search (≤ 25 names per agent, a smaller model such as
+Sonnet is enough). Give every agent the same precise kill rules (below), no
+judgment calls "by field", and say explicitly: RISK needs a concrete reason;
+a consonant cluster alone is none (otherwise agents over-reject). If agents
+invent names themselves: a distinct style or letter band each and a shared
+claimed-names file (append under `flock`).
 
 1. **Ear + meaning / mockery** (costs nothing, kills many): DE, EN, FR, ES,
    IT, PL, TR, RU/Serbian, NL. Drug names, slurs, rude near-words,
@@ -146,6 +164,11 @@ trademark lawyer if anything near-identical exists in the EU.
   under parallel load (.de too, esp. .ai/.io) → automatic backoff, then DNS
   (`dns-fallback`). `-p` = DNS-only prefilter for long lists; RDAP only for
   finalists, sequentially.
+- `generate.py`: enumerates onset × vowel × middle × ending, skips seen
+  names and an exclude regex, applies variety caps (per onset, middle,
+  onset+middle, onset+vowel+ending); `--no-caps` / `--cap-only`.
+- `dns-bulk.py <tld>`: names on stdin → `name free|taken|unknown` via
+  Cloudflare DoH, 24 threads, no rate limits; free = NXDOMAIN = likely free.
 - `site-info.sh`: `for-sale | parked | active | blocked | no-site` per domain.
 - `dpma-search.py`: DPMAregister SmartSearch (public JSON, no login).
   `-n` near misses (filtered; `--all` unfiltered), `--classes` Nice classes

@@ -54,6 +54,17 @@ Semantic track for groupware (small story, not overdone): lat. *nuntius*
   + rare middle (-lk-/-lp-/-rd-/-lf-) + -e/-i passed 21 of 84. Names whose
   core is a common word (store, prende, stelle, sobre) die on longer marks
   containing it, as intended.
+- Slavic-sounding to reviewers: -vo after a consonant (Klamvo, Krilvo read
+  like Russian -ovo/-evo place names), kral-, stol-, prav-, glon-.
+  Nordic-sounding: -ulf. Exclude them when the user rules out Eastern
+  European / Nordic styles.
+- Trademark pass rates: hand-picked pattern names ~35 %; after an LLM ear
+  prefilter ~40 %.
+- Central generation beat agents inventing names: 50k scripted combinations,
+  bulk DNS for .de + .com + .ai left ~17k, then caps and filters. Agents that
+  invent names repeat each other and drift into one ending.
+- Checking agents over-rejected ("consonant cluster" as a RISK reason) until
+  told that RISK needs a concrete reason.
 - Endings that collide with big abbreviation brands: -kra (DEKRA), -ska
   (Iskra), -ndo (BANDO).
 - Ending density: soft -a/-o names died mostly on near-miss marks, not on
