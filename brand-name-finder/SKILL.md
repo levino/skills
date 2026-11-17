@@ -13,6 +13,11 @@ web, trademarks). Pattern hints, statistics and examples: `references/lessons.md
 0. **Goal: the last free name in the most coveted sound region**, not any
    free name. Free .com signals undesirability: never use it as the primary
    shortlist filter; rank by desirability, then check availability.
+   **Domain is secondary info, never a filter** (name.app, name-product.de
+   work around a taken one). Decisive: clean trademark in the relevant
+   classes (software: 09, 38, 42; 35 = caution), nobody does notable business
+   under the name, no bad meaning. Order: sound → trademark → business and
+   meaning check → domains as info only.
 1. **Never call a name free before all checks passed.** A check that could
    not run is "nicht geprüft". Unknown is never free. Unresolved names
    (`classes?`, `ERROR`, `UNRESOLVED`, "Websuche offen") are counted
@@ -22,10 +27,15 @@ web, trademarks). Pattern hints, statistics and examples: `references/lessons.md
    in the same or a neighbouring field, (b) a big business of any field (or a
    near-identical sound: Kovanta ≈ Covanta), or (c) a live trademark (rule 4).
    Parked or for-sale is fine.
-4. **Trademark kill rule:** a live mark within Levenshtein 1 (after sound
-   normalisation) whose classes intersect 9/35/38/42 → dead. Only exception:
-   overlap in class 35 alone and the business clearly unrelated → "Vorsicht".
-   "Different field" from a web search never overrides an overlapping class.
+4. **Trademark kill rule (tiers):** (a) a live mark with the same word as
+   the candidate in 9/38/42 → dead; a live mark within Levenshtein 1 (after
+   sound normalisation) in 9/38/42 for related goods → dead. (b) only a
+   one-letter-off or partial mark in class 9 for clearly unrelated goods
+   (cables, toys, eyewear), or overlap in class 35 alone → "Risiko": list it,
+   the lawyer decides, don't kill mechanically (matters for very short names).
+   (c) nothing → clean. "Different field" from a web search never overrides
+   an overlapping class in tier (a). A name whose DPMA variants timed out is
+   UNRESOLVED, not clean (rule 1).
 5. **RISK needs a concrete reason.** A consonant cluster alone is none.
 6. **One name per web search** (`"name"`, `"name" software`, `"name" app`).
 7. **Calibrate every lookup method**: known-taken → taken, gibberish → free.
@@ -71,12 +81,14 @@ brand/drug sound-alikes, foreign-sounding names, near-duplicates.
 ### 5. Check — cheap first, stop at the first hard fail
 1. **Ear + meaning / mockery** in DE, EN, FR, ES, IT, PL, TR, RU/Serbian, NL:
    drug names, slurs, rude near-words, sound-alike abbreviations.
-2. **Domain prefilter** (if not done in step 4):
+2. **Domain prefilter** (optional, info only; never drops a name the user
+   wants to see; if not done in step 4):
    `scripts/check-domains.sh -p -t "de ai" names…` (DNS only, no rate limits).
 3. **Trademarks:** `scripts/dpma-search.py -n --classes names…` in batches
    of ≤ 20 (or 4 parallel streams of ≤ 12). Apply rule 4. Recent EU
    applications count; fresh filings appear only after weeks. Optional in
    the user's browser: TMview for non-EU offices. Don't script TMview.
+   Re-run UNRESOLVED names (DPMA times out on some variants of short names).
 4. **All TLDs + taken domains:**
    `scripts/check-domains.sh -t "de com ai io app eu co net org dev" names…`
    (RDAP, sequential, `DELAY≥0.5`), then
@@ -84,7 +96,8 @@ brand/drug sound-alikes, foreign-sounding names, near-duplicates.
    `for-sale`/`parked` → note; `active` → open it, software/SaaS/AI/business
    tools → dead; `blocked` → check via web search. DNS-only results are
    "wahrscheinlich frei".
-5. **Web search, last**, only for survivors, plus one-letter-off near misses
+5. **Web search / meaning check, last**, only for survivors (a separate
+   web-based pass, not the model judge's memory), plus one-letter-off near misses
    in the same field (c/k, v/w, ph/f spellings). Budget ~200 calls per
    session, shared: split it between agents up front. Budget gone →
    "Websuche offen". Don't scrape search engines.

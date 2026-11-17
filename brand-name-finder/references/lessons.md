@@ -228,3 +228,25 @@ the right direction; the last free name among the most coveted ones."
   consonant-vowel alternation with at most one medial cluster.
 - Generation: never hand-invent names; enumerate by script or prompt several
   models/flavours (200 names each) and filter mechanically.
+
+## Domain secondary, trademark tiers, short CVCV names
+
+- **Domain is secondary.** A free-.com/.de prefilter silently removed all
+  short 4-letter names the user wanted to see. A taken domain can be worked
+  around (name.app, name-product.de). What decides: clean trademark in the
+  relevant classes (software: 09, 38, 42; 35 = caution), nobody doing notable
+  business under the name, no bad meaning. Order: sound/quality → trademark →
+  business + meaning check → domains as info only.
+- **Short CV-CV names (4 letters, like lumo, kilu) are a valid, highly
+  coveted space.** ~5,600 combos with a simple consonant set; a model judge
+  rated ~5 % as strong; ~70 % of those hit a live near-identical mark
+  (Levenshtein ≤ 1) in class 09/42 at DPMA. Expect ~10-20 % clean survivors.
+- **Kill rule needs tiers for very short names:** class 09 is broad (cables,
+  toys, eyewear). (a) same word in 09/38/42 → dead; (b) only a one-letter-off
+  or partial mark in 09 for unrelated goods → risk, list it, a lawyer
+  decides; (c) nothing → clean. Don't mechanically kill (b).
+- **Model judges rating many names in parallel** sometimes give generic
+  reasons and only "check meaning from memory": run a separate web-based
+  meaning/business check on the survivors.
+- **DPMA queries for short names often time out on some variants:** re-run
+  UNRESOLVED names and report still-unresolved ones as such, not as clean.
